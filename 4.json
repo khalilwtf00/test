@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  title: Swagger Petstore
+  description: <math><foo-test><mi><li><table><foo-test><li></li></foo-test><a><style><! \${</style>}<foo-b id="><img src onerror='alert(1)'>">hmm...</foo-b></a></table></li></mi></foo-test></math>
+  version: 1.0.7
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - https
+  - http
+
+tags:
+  - name: pet
+    description: Operations about pets
+  - name: store
+    description: Access to pet orders
+  - name: user
+    description: User management
+
+paths:
+  # --- Pet Endpoints ---
+  /pet:
+    post:
+      tags: [pet]
+      summary: Add a new pet
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Pet"
+      responses:
+        405:
+          description: Invalid input
+      security:
+        - petstore_auth: [write:pets, read:pets]
+
+  /pet/{petId}:
+    get:
+      tags: [pet]
+      summary: Get a pet by ID
+      parameters:
+        - name: petId
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/Pet"
+        404:
+          description: Pet not found
+      security:
+        - api_key: []
+
+  # --- Store Endpoints ---
+  /store/order:
+    post:
+      tags: [store]
+      summary: Place an order
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/Order"
+      responses:
+        200:
+          description: Order placed
+          schema:
+            $ref: "#/definitions/Order"
+
+  # --- User Endpoints ---
+  /user/{username}:
+    get:
+      tags: [user]
+      summary: Get user by name
+      parameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: Successful operation
+          schema:
+            $ref: "#/definitions/User"
+
+# --- Security Definitions ---
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: https://petstore.swagger.io/oauth/authorize
+    scopes:
+      read:pets: "Read pets"
+      write:pets: "Modify pets"
+
+# --- Data Models ---
+definitions:
+  Pet:
+    type: object
+    required: [name, photoUrls]
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+        example: "doggie"
+      photoUrls:
+        type: array
+        items:
+          type: string
+
+  Order:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      petId:
+        type: integer
+        format: int64
+
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+
+externalDocs:
+  description: Find more about Swagger
+  url: http://swagger.io
