@@ -4,7 +4,7 @@ info:
   description: A simple API to manage a book store
   version: 1.0.0
 servers:
-  - url: http://api.example.com/v1
+  - url: https://api.example.com/v1
     description: Production server
   - url: http://localhost:8080/v1
     description: Development server
@@ -49,6 +49,7 @@ paths:
           description: ID of the book to retrieve
           schema:
             type: integer
+            format: int64
       responses:
         '200':
           description: Book found
